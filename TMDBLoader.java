@@ -33,7 +33,8 @@ public class TMDBLoader {
             if (conn != null) {
                 System.out.println("Connected to the database.");
 
-                // STEP 4: DELETE old data for a clean slate
+                // Ensure the movies table exists, then DELETE old data for a clean slate
+                createMoviesTable(conn);
                 cleanupTable(conn);
 
                 // Fetch data from TMDb API
@@ -50,6 +51,20 @@ public class TMDBLoader {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private static void createMoviesTable(Connection conn) throws Exception {
+        String sql = "CREATE TABLE IF NOT EXISTS movies (" +
+                "id INTEGER PRIMARY KEY, " +
+                "title TEXT NOT NULL, " +
+                "popularity REAL, " +
+                "release_date TEXT" +
+                ");";
+
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql);
+            System.out.println("Ensured 'movies' table exists.");
         }
     }
 
