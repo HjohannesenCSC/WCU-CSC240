@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.ArrayList;
 
 public class NewsAPILoader {
 
@@ -37,8 +39,9 @@ public class NewsAPILoader {
                 cleanupTable(conn);
 
                 // Get all movies from the database
-                // For each movie, get news count and insert into news_mentions
-                int recordsProcessed = processAllMovies(conn);
+                // For each movie, get news count and build a list of NewsMention objects, then insert
+                List<NewsMention> mentions = buildNewsMentions(conn);
+                int recordsProcessed = insertNewsMentions(conn, mentions);
 
                 // Write summary file
                 writeSummaryFile(recordsProcessed);
@@ -75,27 +78,48 @@ public class NewsAPILoader {
         }
     }
 
-    private static int processAllMovies(Connection conn) throws Exception {
+    // Build list of NewsMention objects by querying movies and calling NewsAPI
+    private static List<NewsMention> buildNewsMentions(Connection conn) throws Exception {
         String selectSQL = "SELECT id, title FROM movies;";
-        int count = 0;
-        
+        List<NewsMention> mentions = new ArrayList<>();
+
         try (Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(selectSQL)) {
-            
+
             while (rs.next()) {
                 int movieId = rs.getInt("id");
                 String movieTitle = rs.getString("title");
-                
-                // Get news count for this movie
+
                 int newsCount = getNewsCount(movieTitle);
-                
-                // Insert into news_mentions table
-                insertNewsMention(conn, movieId, newsCount);
-                
-                count++;
-                System.out.println("Processed: " + movieTitle + " (" + newsCount + " news mentions)");
+
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String now = dtf.format(LocalDateTime.now());
+
+                NewsMention nm = new NewsMention(movieId, "NewsAPI", newsCount, now);
+                mentions.add(nm);
+
+                System.out.println("Prepared: " + movieTitle + " (" + newsCount + " news mentions)");
             }
         }
+
+        return mentions;
+    }
+
+    // Insert a list of NewsMention objects into the DB
+    private static int insertNewsMentions(Connection conn, List<NewsMention> mentions) throws Exception {
+        String sql = "INSERT INTO news_mentions (movie_id, news_source, mention_count, last_updated) VALUES (?, ?, ?, ?);";
+        int count = 0;
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            for (NewsMention nm : mentions) {
+                pstmt.setInt(1, nm.getMovieId());
+                pstmt.setString(2, nm.getNewsSource());
+                pstmt.setInt(3, nm.getMentionCount());
+                pstmt.setString(4, nm.getLastUpdated());
+                pstmt.executeUpdate();
+                count++;
+            }
+        }
+        System.out.println("Inserted " + count + " records into 'news_mentions'.");
         return count;
     }
 
@@ -125,22 +149,7 @@ public class NewsAPILoader {
         }
     }
 
-    private static void insertNewsMention(Connection conn, int movieId, int mentionCount) throws Exception {
-        String sql = "INSERT INTO news_mentions (movie_id, news_source, mention_count, last_updated) VALUES (?, ?, ?, ?);";
-        
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, movieId);
-            pstmt.setString(2, "NewsAPI");
-            pstmt.setInt(3, mentionCount);
-            
-            // Add current timestamp
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String now = dtf.format(LocalDateTime.now());
-            pstmt.setString(4, now);
-            
-            pstmt.executeUpdate();
-        }
-    }
+
 
     private static void writeSummaryFile(int recordsProcessed) {
         String filename = "newsapi_summary.txt";
