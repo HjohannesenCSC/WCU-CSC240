@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -94,31 +96,46 @@ public class TMDBLoader {
         }
     }
 
-    private static int parseAndInsertData(Connection conn, String jsonResponse) throws Exception {
+    // Public parser so tests can call it directly
+    public static List<Movie> parseMoviesFromJson(String jsonResponse) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(jsonResponse);
         JsonNode resultsNode = rootNode.get("results");
 
-        String insertSQL = "INSERT INTO movies (id, title, popularity, release_date) VALUES (?, ?, ?, ?);";
+        List<Movie> movies = new ArrayList<>();
+        if (resultsNode != null && resultsNode.isArray()) {
+            for (JsonNode movieNode : resultsNode) {
+                int id = movieNode.hasNonNull("id") ? movieNode.get("id").asInt() : 0;
+                String title = movieNode.hasNonNull("title") ? movieNode.get("title").asText() : "";
+                double popularity = movieNode.hasNonNull("popularity") ? movieNode.get("popularity").asDouble() : 0.0;
+                String releaseDate = movieNode.hasNonNull("release_date") ? movieNode.get("release_date").asText() : null;
 
+                Movie m = new Movie(id, title, popularity, releaseDate);
+                movies.add(m);
+            }
+        }
+
+        return movies;
+    }
+
+    private static int parseAndInsertData(Connection conn, String jsonResponse) throws Exception {
+        List<Movie> movies = parseMoviesFromJson(jsonResponse);
+
+        // Insert parsed movies into DB
+        String insertSQL = "INSERT INTO movies (id, title, popularity, release_date) VALUES (?, ?, ?, ?);";
         int count = 0;
         try (PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
-            for (JsonNode movieNode : resultsNode) {
-                int id = movieNode.get("id").asInt();
-                String title = movieNode.get("title").asText();
-                double popularity = movieNode.get("popularity").asDouble();
-                String releaseDate = movieNode.get("release_date").asText();
-
-                pstmt.setInt(1, id);
-                pstmt.setString(2, title);
-                pstmt.setDouble(3, popularity);
-                pstmt.setString(4, releaseDate);
+            for (Movie m : movies) {
+                pstmt.setInt(1, m.getId());
+                pstmt.setString(2, m.getTitle());
+                pstmt.setDouble(3, m.getPopularity());
+                pstmt.setString(4, m.getReleaseDate());
                 pstmt.executeUpdate();
-
                 count++;
             }
         }
-        System.out.println("Inserted " + count + " records into the 'movies' table.");
+
+        System.out.println("Parsed " + movies.size() + " movies and inserted " + count + " records into the 'movies' table.");
         return count;
     }
 
