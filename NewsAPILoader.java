@@ -32,7 +32,8 @@ public class NewsAPILoader {
             if (conn != null) {
                 System.out.println("Connected to the database.");
 
-                // Clean the table first
+                // Ensure the news_mentions table exists, then clean it
+                createNewsMentionsTable(conn);
                 cleanupTable(conn);
 
                 // Get all movies from the database
@@ -47,6 +48,22 @@ public class NewsAPILoader {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private static void createNewsMentionsTable(Connection conn) throws Exception {
+    String sql = "CREATE TABLE IF NOT EXISTS news_mentions (" +
+        "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        "movie_id INTEGER UNIQUE NOT NULL, " +
+        "news_source TEXT NOT NULL, " +
+        "mention_count INTEGER, " +
+        "last_updated TEXT, " +
+        "FOREIGN KEY (movie_id) REFERENCES movies (id)" +
+        ");";
+
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql);
+            System.out.println("Ensured 'news_mentions' table exists.");
         }
     }
 
