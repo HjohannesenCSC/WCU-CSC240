@@ -16,18 +16,20 @@ Command: javac -cp "lib/*" *.java
     
 
 Command: java -cp ".;lib/*" TMDBLoader
+If running on Mac: java -cp ".:lib/*" TMDBLoader
 
 
 3. Run NewsAPI loader (calls live NewsAPI and write `newsapi_summary.txt`):
             BEWARE : running NewsAPILoader too many times results in Error 429 aka exceeding the Rate Limit
 
 Command: java -cp ".;lib/*" NewsAPILoader
+If running on Mac: java -cp ".:lib/*" NewsAPILoader
 
 
 4. Run verifiers to check summaries txt files against database:
 
-java -cp ".;lib/*" TMDBVerifier
-java -cp ".;lib/*" NewsAPIVerifier
+java -cp ".;lib/*" TMDBVerifier      Mac: java -cp ".:lib/*" TMDBVerifier
+java -cp ".;lib/*" NewsAPIVerifier   Mac: java -cp ".:lib/*" NewsAPIVerifier
 
 
 Troubleshooting:
@@ -37,4 +39,5 @@ Powershell Command:
 
 sqlite3 project.db < create_movies_table.sql
 sqlite3 project.db < create_news_mentions_table.sql
+
 
