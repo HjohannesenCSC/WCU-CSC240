@@ -33,7 +33,7 @@ public class TMDBLoader {
             if (conn != null) {
                 System.out.println("Connected to the database.");
 
-                // STEP 4: Delete old data for a clean slate
+                // STEP 4: DELETE old data for a clean slate
                 cleanupTable(conn);
 
                 // Fetch data from TMDb API
