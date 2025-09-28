@@ -1,4 +1,4 @@
-// NewsAPIVerifier.java
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -12,7 +12,7 @@ public class NewsAPIVerifier {
 
     public static void main(String[] args) {
         try {
-            // 1. Read summary file
+            //Program reads summary file
             List<String> lines = Files.readAllLines(Paths.get("newsapi_summary.txt"));
             String recordLine = lines.stream()
                     .filter(l -> l.startsWith("Movies Processed"))
@@ -20,14 +20,14 @@ public class NewsAPIVerifier {
                     .orElse("Movies Processed: 0");
             int recordsFromFile = Integer.parseInt(recordLine.split(":")[1].trim());
 
-            // 2. Count records in DB
+            //Program counts records in DB
             Connection conn = DriverManager.getConnection(DB_URL);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM news_mentions;");
             rs.next();
             int recordsInDB = rs.getInt(1);
 
-            // 3. Compare
+            //Program compares the records
             if (recordsFromFile == recordsInDB) {
                 System.out.println("Verification passed! Records match: " + recordsInDB);
             } else {
