@@ -6,8 +6,7 @@
 ### Overview 
 The Data API provides direct access to the SQLite database with REST endpoints returning raw JSON data.
 ### How to Run the Data API
-1. Navigate to the data-api folder:
-cd data-api
+1. Navigate to the data-api folder: src -> main -> java -> DataApi.java
 2. Compile the java application:
 javac-cp".:../lib/sqlite-jdbc.jar:../lib/slf4j-api-1.7.36.jar:../lib/slf4j-simple-1.7.36.jar" DataApi.java
 3. Run the Data API:
