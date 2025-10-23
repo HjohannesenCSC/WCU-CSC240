@@ -1,9 +1,13 @@
 
 public class Movie {
+    //ID of the movie we're looking up
     private int id;
+    //Name of the movie
     private String title;
+    //gets the score of popularity to give it a rating
     private double popularity;
-    private String release_date; // matches Tier 1 JSON/DB field
+    // matches Tier 1 JSON/DB field
+    private String release_date;
 
     public Movie() {}
 
