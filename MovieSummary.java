@@ -13,7 +13,7 @@ public class MovieSummary {
     private String newsLastUpdated;
 
     // Derived business logic
-    private String popularityBucket; // LOW/MEDIUM/HIGH
+    private String popularityBucket; // Tiers - Low/Med/High
     private boolean trending;
 
     public static MovieSummary from(Movie m, NewsMention nm) {
@@ -34,8 +34,8 @@ public class MovieSummary {
         }
 
         // Simple business rules (customize as needed)
-        s.popularityBucket = s.popularity >= 100 ? "HIGH"
-                             : s.popularity >= 50 ? "MEDIUM" : "LOW";
+        s.popularityBucket = s.popularity >= 100 ? "High"
+                             : s.popularity >= 50 ? "Medium" : "Low";
         s.trending = (s.mentionCount >= 25) || (s.mentionCount >= 10 && s.popularity >= 50);
         return s;
     }
