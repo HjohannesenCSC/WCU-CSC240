@@ -59,7 +59,7 @@
             <artifactId>exec-maven-plugin</artifactId>
             <version>3.1.0</version>
             <configuration>
-              <mainClass>UiApi</mainClass>
+              <mainClass>com.yourteam.classapi.UiApi</mainClass>
             </configuration>
           </plugin>
         </plugins>

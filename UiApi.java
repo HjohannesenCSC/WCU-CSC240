@@ -1,3 +1,5 @@
+package com.yourteam.classapi;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.*;
@@ -7,6 +9,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import static spark.Spark.*;
+
+
 
 public class UiApi {
     private static final Gson GSON = new GsonBuilder().serializeNulls().create();
