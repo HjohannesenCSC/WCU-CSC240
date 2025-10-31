@@ -1,3 +1,4 @@
+package com.yourteam.classapi;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,6 +11,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static spark.Spark.*;
+
+
 
 public class ClassApi {
 

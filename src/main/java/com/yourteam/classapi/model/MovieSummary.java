@@ -1,3 +1,4 @@
+package com.yourteam.classapi.model;
 
 public class MovieSummary {
 

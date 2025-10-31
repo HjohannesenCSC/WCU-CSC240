@@ -1,0 +1,7 @@
+com\yourteam\classapi\model\MovieSummary.class
+com\yourteam\classapi\ClassApi.class
+com\yourteam\classapi\client\DataApiClient$1.class
+com\yourteam\classapi\client\DataApiClient$2.class
+com\yourteam\classapi\model\Movie.class
+com\yourteam\classapi\client\DataApiClient.class
+com\yourteam\classapi\model\NewsMention.class
