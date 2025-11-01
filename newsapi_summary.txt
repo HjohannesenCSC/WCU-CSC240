@@ -1,4 +1,0 @@
-NewsAPI Data Load Summary
-==========================
-Load Date: 2025-10-31 17:10:06
-Movies Processed: 20
