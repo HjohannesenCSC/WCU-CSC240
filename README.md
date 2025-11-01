@@ -1,6 +1,25 @@
 # WCU-CSC 240 - Project Phase 2
 ## Hooria, Rylee, Henry, Matt
 
+
+## To build Phase 1 using Maven:
+Build command: mvn -f "c:\GitHub\WCU-CSC240\phase1-ingestor\pom.xml" -DskipTests clean package
+
+Executable jar should now exist: c:\GitHub\WCU-CSC240\phase1-ingestor\target\phase1-ingestor-1.0-SNAPSHOT.jar
+
+Run the created jar: 
+java -jar "c:\GitHub\WCU-CSC240\phase1-ingestor\target\phase1-ingestor-1.0-SNAPSHOT.jar"
+
+## Option 2: Compile manually
+
+javac -cp "lib/*" -d target/classes "phase1/TMDBLoader.java" "phase1/NewsAPILoader.java" "phase1/NewsMention.java"
+
+java -cp "target/classes;lib/*" TMDBLoader			
+java -cp "target/classes;lib/*" NewsAPILoader
+
+__________________________________________________________________________________________________________________________
+
+
 ## Tier 1: Data API - COMPLETE ✅
 
 ### Overview 
