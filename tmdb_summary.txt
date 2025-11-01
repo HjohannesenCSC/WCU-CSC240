@@ -1,4 +1,0 @@
-TMDb Data Load Summary
-======================
-Load Date: 2025-10-31 19:06:44
-Records Inserted: 20
