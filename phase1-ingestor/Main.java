@@ -2,9 +2,6 @@ import java.util.Objects;
 
 /**
  * Simple orchestrator to run the TMDB and NewsAPI loaders in sequence.
- * The existing loader classes (TMDBLoader and NewsAPILoader) already expose a main method,
- * so this class delegates to them. Keep this class in the default package to match the
- * other classes in this module.
  */
 public class Main {
     public static void main(String[] args) {

@@ -9,14 +9,14 @@ mvn -f "c:\GitHub\WCU-CSC240\phase1-ingestor\pom.xml" -DskipTests clean package
 ```
 
 ## Executable jar should now exist:
-c:\GitHub\WCU-CSC240\phase1-ingestor\target\phase1-ingestor-1.0-SNAPSHOT-shaded.jar
+c:\GitHub\WCU-CSC240\phase1-ingestor\target\phase1-ingestor-1.0-SNAPSHOT.jar
 ```
 
 ## Run
-Run the shaded jar with:
+Run the jar with:
 ```powershell
 # from any folder
-java -jar "c:\GitHub\WCU-CSC240\phase1-ingestor\target\phase1-ingestor-1.0-SNAPSHOT-shaded.jar"
+java -jar "c:\GitHub\WCU-CSC240\phase1-ingestor\target\phase1-ingestor-1.0-SNAPSHOT.jar"
 ```
 
 The program will run the TMDb loader first (populates `movies` table) and then the NewsAPI loader (builds `news_mentions` table and writes `newsapi_summary.txt`).
