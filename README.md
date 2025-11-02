@@ -127,3 +127,31 @@ Tier 3 (UI API) -> Port 8083
 If you see an error like:
 
 {"error":"Failed to reach Data API"}, make sure your Data API is running and accessible at http://localhost:4567.
+
+---
+## Tier 3: UI API - COMPLETE ✅
+
+### Overview
+The UI API consumes the Class API and formats data specifically for frontend/UI consumption, adding UI-specific metadata and aggregation.
+
+### How to Run the UI API 
+```bash
+mvn exec:java -Pui-api
+The API will start on: http://localhost:8083
+
+### **UI API Endpoints**
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/health` | GET | Service health check and port status |
+| `/dashboard` | GET | Aggregated data for UI dashboard (featured + recent movies) |
+| `/movie/{id}` | GET | Movie details formatted for user interface |
+| `/movies` | GET | Movies list with UI pagination metadata |
+| `/status` | GET | Class API connectivity status check |
+
+### Test the UI API
+```bash
+curl http://localhost:8083/health
+curl http://localhost:8083/dashboard
+curl http://localhost:8083/movie/1
+curl http://localhost:8083/movies
+curl http://localhost:8083/status
