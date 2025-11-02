@@ -82,21 +82,21 @@ This matches the endpoints implemented in UiApi.java (which expose /movies, /das
 
 ## ClassApi Routing:
 - Make sure ClassApi is running on port 8082
-'''powershell
+
 curl.exe -i http://localhost:8082/health
-'''
+
 - First check if its reachable from inside APISIX container
 '''powershell
 docker exec -it docker-apisix-apisix-1 /bin/sh
 curl -i http://host.docker.internal:8082/health
 '''
 - Test through APISIX (host):
-'''powershell
-# class API endpoints via APISIX
+
+- class API endpoints via APISIX
 curl.exe -i http://127.0.0.1:9080/api/health
 curl.exe -i http://127.0.0.1:9080/api/movies
 curl.exe -i http://127.0.0.1:9080/api/movie-summary/1
-'''
+
 
 
 6) Troubleshooting tips
