@@ -1,0 +1,10 @@
+version: '3.8'
+
+# Override for APISIX service to mount local config.yaml into the container.
+# Adjust the service name (`apisix`) if your docker-compose uses a different name.
+services:
+  apisix:
+    volumes:
+      # Mount the repo config.yaml into container's config location so edits on the host
+      # are picked up after container restart. Use :ro to avoid the container modifying the file.
+      - ./config.yaml:/usr/local/apisix/conf/config.yaml:ro
