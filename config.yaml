@@ -51,18 +51,17 @@ plugin_attr:
       port: 9091
 
 # Declarative route(s) - convenience entry for repository copy.
-# Note: APISIX stores dynamic routes in etcd via the Admin API. This
-# section is a repository-side declarative example you can use to
-# bootstrap or document routes. To apply the route to the running
-# APISIX instance immediately, use the Admin API (or copy this file
-# into the container and restart APISIX if your setup mounts it).
+# Note: APISIX stores dynamic routes in etcd via the Admin API. 
+# This section is a repository-side declarative example to bootstrap or document routes. 
+# To apply the route to the running APISIX instance, use the Admin API.
+# OR: copy this file into the container and restart APISIX
 
-# Route: forward requests starting with /data to the Data API running
-# on the Docker host at host.docker.internal:4567. This includes
-# requests such as http://localhost:9080/data and
-# http://localhost:9080/data/news which will be proxied to
-# http://host.docker.internal:4567 and therefore to your local
-# Data API on port 4567.
+
+## Data API routes: 
+# Route: forward requests starting with /data to the Data API running on the Docker host
+# -> at host.docker.internal:4567. 
+# Requests such as http://localhost:9080/data and http://localhost:9080/data/news 
+# will be proxied to http://host.docker.internal:4567 aka local Data API on port 4567
 routes:
   - uri: "/data"
     methods: ["GET", "POST", "PUT", "DELETE"]
@@ -78,11 +77,12 @@ routes:
       nodes:
         "host.docker.internal:4567": 1
 
-  # UI API routes: forward /api/* to the UI API running on Docker host port 8083
+  ## UI API routes: 
+  #forward /ui/* to the UI API running on Docker host port 8083
   
   # UI API routes: forward /ui/* to the UI API running on Docker host port 8083
   # These entries strip the /ui prefix before proxying so downstream
-  # UiApi receives paths like /movies, /health, etc.
+  # UiApi receives paths like /movies, /health
   - uri: "/ui"
     methods: ["GET", "POST", "PUT", "DELETE"]
     plugins:
@@ -103,7 +103,9 @@ routes:
       nodes:
         "host.docker.internal:8083": 1
 
-  # Class API routes: forward /api/* to the Class API running on Docker host port 8082
+  ## Class API routes: 
+  #forward /api/* to the Class API running on Docker host port 8082
+  
   # The /api prefix is preserved so upstream receives requests like /api/movies
   - uri: "/api"
     methods: ["GET", "POST", "PUT", "DELETE"]
