@@ -138,8 +138,7 @@ The UI API consumes the Class API and formats data specifically for frontend/UI 
 ```bash
 mvn exec:java -Pui-api
 The API will start on: http://localhost:8083
-
-### **UI API Endpoints**
+### UI API Endpoints 
 | Endpoint | Method | Purpose |
 |----------|--------|---------|
 | `/health` | GET | Service health check and port status |
