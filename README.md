@@ -31,6 +31,11 @@ javac-cp".:../lib/sqlite-jdbc.jar:../lib/slf4j-api-1.7.36.jar:../lib/slf4j-simpl
 3. Run the Data API:
 javac-cp".:../lib/sqlite-jdbc.jar:../lib/slf4j-api-1.7.36.jar:../lib/slf4j-simple-1.7.36.jar" DataApi
 4. The API will start on: http://localhost:4567
+
+Note: If above commands don't work, try the following:
+ - Navigate to data-api folder (example: cd 'C:\GitHub\WCU-CSC240\data-api')
+ - javac -cp '..\lib\sqlite-jdbc-3.50.3.0.jar' DataApi.java
+ - java -cp ".;..\lib\sqlite-jdbc-3.50.3.0.jar" DataApi
    
 ## Data API Endpoints
 

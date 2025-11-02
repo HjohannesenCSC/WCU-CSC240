@@ -3,11 +3,13 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.util.Optional;
 
 public class DataApi {
     public static void main(String[] args) throws IOException {
-        // Create HTTP server on port 4567
-        HttpServer server = HttpServer.create(new InetSocketAddress(4567), 0);
+    // Create HTTP server on port (use DATA_API_PORT env var or default 4567)
+    int port = Integer.parseInt(Optional.ofNullable(System.getenv("DATA_API_PORT")).orElse("4567"));
+    HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         
         // Health endpoint
         server.createContext("/health", new HealthHandler());
@@ -21,8 +23,8 @@ public class DataApi {
         server.createContext("/news/", new NewsByIdHandler());
         
         server.start();
-        System.out.println("✅ Data API running on http://localhost:4567");
-        System.out.println("📝 Test with: curl http://localhost:4567/health");
+    System.out.println("✅ Data API running on http://localhost:" + port);
+    System.out.println("📝 Test with: curl http://localhost:" + port + "/health");
     }
     
     static class HealthHandler implements HttpHandler {
