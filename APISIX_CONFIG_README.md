@@ -87,22 +87,25 @@ curl.exe -i http://127.0.0.1:9080/ui/status
 curl.exe -i http://localhost:8082/health
 
 - First check if its reachable from inside APISIX container
-'''powershell
-docker exec -it docker-apisix-apisix-1 /bin/sh
-curl -i http://host.docker.internal:8082/health
-'''
+    - Commands:
+        docker exec -it docker-apisix-apisix-1 /bin/sh
+        curl -i http://host.docker.internal:8082/health
+
+
+
 - Test through APISIX (host):
 
 - class API endpoints via APISIX
+```powershell
 curl.exe -i http://127.0.0.1:9080/api/health
 curl.exe -i http://127.0.0.1:9080/api/movies
 curl.exe -i http://127.0.0.1:9080/api/movie-summary/1
-
+'''
 
 
 6) Troubleshooting tips
 - If `curl` returns `404 No context found for request` or `502 Bad Gateway`:
-  - Verify the route exists: `curl.exe -i -X GET "http://127.0.0.1:9180/apisix/admin/routes" -H "X-API-KEY: <admin_key>"`
+  - Verify route exists: `curl.exe -i -X GET "http://127.0.0.1:9180/apisix/admin/routes" -H "X-API-KEY: <admin_key>"`
 
 7) Revert changes
 ```powershell
