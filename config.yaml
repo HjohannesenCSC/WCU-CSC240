@@ -77,3 +77,50 @@ routes:
       type: roundrobin
       nodes:
         "host.docker.internal:4567": 1
+
+  # UI API routes: forward /api/* to the UI API running on Docker host port 8083
+  
+  # UI API routes: forward /ui/* to the UI API running on Docker host port 8083
+  # These entries strip the /ui prefix before proxying so downstream
+  # UiApi receives paths like /movies, /health, etc.
+  - uri: "/ui"
+    methods: ["GET", "POST", "PUT", "DELETE"]
+    plugins:
+      proxy-rewrite:
+        regex_uri: ["^/ui$", "/"]
+    upstream:
+      type: roundrobin
+      nodes:
+        "host.docker.internal:8083": 1
+
+  - uri: "/ui/*"
+    methods: ["GET", "POST", "PUT", "DELETE"]
+    plugins:
+      proxy-rewrite:
+        regex_uri: ["^/ui/(.*)", "/$1"]
+    upstream:
+      type: roundrobin
+      nodes:
+        "host.docker.internal:8083": 1
+
+  # Class API routes: forward /api/* to the Class API running on Docker host port 8082
+  # The /api prefix is preserved so upstream receives requests like /api/movies
+  - uri: "/api"
+    methods: ["GET", "POST", "PUT", "DELETE"]
+    plugins:
+      proxy-rewrite:
+        regex_uri: ["^/api$", "/"]
+    upstream:
+      type: roundrobin
+      nodes:
+        "host.docker.internal:8082": 1
+
+  - uri: "/api/*"
+    methods: ["GET", "POST", "PUT", "DELETE"]
+    plugins:
+      proxy-rewrite:
+        regex_uri: ["^/api/(.*)", "/$1"]
+    upstream:
+      type: roundrobin
+      nodes:
+        "host.docker.internal:8082": 1

@@ -25,10 +25,10 @@ Prerequisites
     cd apisix-docker/example
 ```
 - Inspect containers (shows APISIX and ports)
-'''powershell
+
 docker ps --format '{{.ID}}\t{{.Names}}\t{{.Ports}}\t{{.Image}}'
-'''
-    - - should see docker-apisix-prometheus-1, grafana-1, etcd-1, web1-1 with ID's and ports listed
+
+    - should see docker-apisix-prometheus-1, grafana-1, etcd-1, web1-1 with ID's and ports listed
 
 - APISIX container running and reachable on the mapped host ports (proxy: `9080`, admin: `9180`).
 - Admin API found in `config.yaml` under `deployment.admin.admin_key`
@@ -48,32 +48,60 @@ docker cp docker-apisix-apisix-1:/usr/local/apisix/conf/config.yaml .\config.yam
 ```
 
 3) Copy edited `config.yaml` from the repo into the container and restart
+
 Note: overwriting a file that's in-use may show messages like "device or resource busy" but the copy can still succeed. Back up first.
 ```powershell
-# copy edited file into the container
+# copy edited file into container
 docker cp .\config.yaml docker-apisix-apisix-1:/usr/local/apisix/conf/config.yaml
 
-# restart the container so APISIX re-reads the file on startup
+# restart the container so APISIX re-reads file on startup
 docker restart docker-apisix-apisix-1
 ```
 
 5) Test the proxy
-From the host, call APISIX proxy port (usually `9080`). Example:
+From the host, call APISIX proxy port (usually `9080`).
 
 ```powershell
 curl.exe -i http://127.0.0.1:9080/data/news
 curl.exe -i http://127.0.0.1:9080/data/movies
 ```
+If route is configured with proxy-rewrite, APISIX will forward `/data/news` to `http://host.docker.internal:4567/news` to receive Data API's JSON
 
-If the route is configured with the proxy-rewrite shown above, APISIX will forward `/data/news` to `http://host.docker.internal:4567/news` to receive Data API's JSON
+
+## UIApi Routing:
+- Make sure UIApi is running on port 8083
+'''powershell
+curl.exe -i http://127.0.0.1:9080/ui/movies
+curl.exe -i http://127.0.0.1:9080/ui/status
+'''
+- host.docker.internal:8083 serves as upstream so the container reaches host OS service at port 8083
+The proxy-rewrite strips /api so:
+Client -> APISIX: /ui/movies
+APISIX -> UI API upstream: /movies
+This matches the endpoints implemented in UiApi.java (which expose /movies, /dashboard, /status, /movie/:id).
+
+## ClassApi Routing:
+- Make sure ClassApi is running on port 8082
+'''powershell
+curl.exe -i http://localhost:8082/health
+'''
+- First check if its reachable from inside APISIX container
+'''powershell
+docker exec -it docker-apisix-apisix-1 /bin/sh
+curl -i http://host.docker.internal:8082/health
+'''
+- Test through APISIX (host):
+'''powershell
+# class API endpoints via APISIX
+curl.exe -i http://127.0.0.1:9080/api/health
+curl.exe -i http://127.0.0.1:9080/api/movies
+curl.exe -i http://127.0.0.1:9080/api/movie-summary/1
+'''
+
 
 6) Troubleshooting tips
 - If `curl` returns `404 No context found for request` or `502 Bad Gateway`:
   - Verify the route exists: `curl.exe -i -X GET "http://127.0.0.1:9180/apisix/admin/routes" -H "X-API-KEY: <admin_key>"`
-  - Confirm APISIX admin key in `/usr/local/apisix/conf/config.yaml`.
-  - Ensure upstream is reachable from within the container (use `docker exec <container> ping host.docker.internal` or `curl` inside container to upstream).
-- If `docker cp` reports "device or resource busy", the copy may still succeed. Back up before overwriting and check the file inside the container after the copy.
-- If etcd errors appear in APISIX logs (e.g., "has no healthy etcd endpoint available"), dynamic configuration may fail; check etcd container and network.
 
 7) Revert changes
 ```powershell
