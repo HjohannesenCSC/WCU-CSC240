@@ -135,7 +135,6 @@ If you see an error like:
 The UI API consumes the Class API and formats data specifically for frontend/UI consumption, adding UI-specific metadata and aggregation.
 
 ### How to Run the UI API 
-```bash
 mvn exec:java -Pui-api
 The API will start on: http://localhost:8083
 ### UI API Endpoints 
@@ -148,7 +147,6 @@ The API will start on: http://localhost:8083
 | `/status` | GET | Class API connectivity status check |
 
 ### Test the UI API
-```bash
 curl http://localhost:8083/health
 curl http://localhost:8083/dashboard
 curl http://localhost:8083/movie/1
