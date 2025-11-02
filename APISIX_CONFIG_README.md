@@ -7,8 +7,8 @@ Paths
 - Container config path: `/usr/local/apisix/conf/config.yaml`
 - Repo copy (local): `config.yaml` (root of repo)
 
-Quick summary
-- To view the active config: `docker exec <container> cat /usr/local/apisix/conf/config.yaml`.
+Summary
+- To view active config: `docker exec <container> cat /usr/local/apisix/conf/config.yaml`.
 - To edit: copy the repo `config.yaml` into the container then restart the container.
 - To make runtime changes without restarting: use the APISIX Admin API (requires `admin_key`).
 - To test:
@@ -17,7 +17,7 @@ curl.exe -i http://127.0.0.1:9080/data/news
 curl.exe -i http://127.0.0.1:9080/data/movies
 ```
 
-Prerequisites
+Prereqs:
 - Docker running on Windows (Docker Desktop). Link: https://docs.docker.com/desktop/setup/install/windows-install/ 
 - APISIX Installation guide: https://apisix.apache.org/docs/apisix/installation-guide/
 ```powershell
@@ -47,7 +47,7 @@ docker exec docker-apisix-apisix-1 cat /usr/local/apisix/conf/config.yaml
 docker cp docker-apisix-apisix-1:/usr/local/apisix/conf/config.yaml .\config.yaml.apisix.backup
 ```
 
-3) Copy edited `config.yaml` from the repo into the container and restart
+## Copy edited `config.yaml` from the repo into the container and restart
 
 Note: overwriting a file that's in-use may show messages like "device or resource busy" but the copy can still succeed. Back up first.
 ```powershell
@@ -58,7 +58,7 @@ docker cp .\config.yaml docker-apisix-apisix-1:/usr/local/apisix/conf/config.yam
 docker restart docker-apisix-apisix-1
 ```
 
-5) Test the proxy
+## Test the proxy for DataAPI
 From the host, call APISIX proxy port (usually `9080`).
 
 ```powershell
@@ -70,15 +70,16 @@ If route is configured with proxy-rewrite, APISIX will forward `/data/news` to `
 
 ## UIApi Routing:
 - Make sure UIApi is running on port 8083
-'''powershell
+```powershell
 curl.exe -i http://127.0.0.1:9080/ui/movies
 curl.exe -i http://127.0.0.1:9080/ui/status
-'''
+```
+
 - host.docker.internal:8083 serves as upstream so the container reaches host OS service at port 8083
-The proxy-rewrite strips /api so:
-Client -> APISIX: /ui/movies
-APISIX -> UI API upstream: /movies
-This matches the endpoints implemented in UiApi.java (which expose /movies, /dashboard, /status, /movie/:id).
+    - The proxy-rewrite strips /api so:
+    - Client -> APISIX: /ui/movies
+    - APISIX -> UI API upstream: /movies
+    - Matches the endpoints implemented in UiApi.java (which expose /movies, /dashboard, /status, /movie/:id).
 
 ## ClassApi Routing:
 - Make sure ClassApi is running on port 8082
@@ -110,7 +111,7 @@ docker cp .\config.yaml.apisix.backup docker-apisix-apisix-1:/usr/local/apisix/c
 docker restart docker-apisix-apisix-1
 ```
 
-9) Example: quick verification checklist
+9) Example:
 - View container config: `docker exec docker-apisix-apisix-1 cat /usr/local/apisix/conf/config.yaml`
 - Back up: `docker cp docker-apisix-apisix-1:/usr/local/apisix/conf/config.yaml .\config.yaml.apisix.backup`
 - Copy edited file in: `docker cp .\config.yaml docker-apisix-apisix-1:/usr/local/apisix/conf/config.yaml`
