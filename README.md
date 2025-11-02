@@ -148,7 +148,11 @@ The API will start on: http://localhost:8083
 
 ### Test the UI API
 curl http://localhost:8083/health
+
 curl http://localhost:8083/dashboard
+
 curl http://localhost:8083/movie/1
+
 curl http://localhost:8083/movies
+
 curl http://localhost:8083/status
