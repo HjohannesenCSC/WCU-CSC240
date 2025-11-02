@@ -60,3 +60,69 @@ curl http://localhost:4567/news
 curl http://localhost:4567/movies/1
 
 curl http://localhost:4567/news/1
+
+## Tier 2: Class API - COMPLETE ✅
+
+### Overview
+
+The Class API serves as the middle layer between the Data API and the UI
+
+### How to Run the Class API
+
+Navigate to the project folder containing your pom.xml file:
+
+
+Compile and build using Maven in a terminal using command: mvn clean compile
+
+
+# Run the Class API:
+
+mvn exec:java -Dexec.mainClass=com.yourteam.classapi.ClassApi
+
+
+The API will start on:
+http://localhost:8082
+
+⚠️ Make sure the Tier 1 (Data API) is already running on port 4567 — the Class API depends on it for retrieving movie and news data.
+⚠️ Also make sure you have seperate terminals for each tier of commands - one for Tier 1, another for Tier 2, and likely a third for Tier 3.
+
+Class API Endpoints
+Endpoint	Method	Purpose
+/health	GET	Health check for the Class API
+/movie-summary/{id}	GET	Combines data from /movies/{id} and /news into one JSON summary
+/movies/with-news?minMentions=10&limit=20	GET	Returns a filtered list of movies that have at least the specified number of news mentions
+/highlights/top-mentioned?limit=5	GET	Returns the top N movies ranked by news mentions and popularity
+/	GET	Returns service information and available endpoints
+Example Test Commands
+✅ Health Check
+curl http://localhost:8082/health
+
+
+Expected Output:
+
+{"status":"Class API Tier 2 is working!"}
+
+Get Movie Summary
+curl http://localhost:8082/movie-summary/1
+
+Get Movies With News Mentions
+curl "http://localhost:8082/movies/with-news?minMentions=5&limit=10"
+
+Get Top Mentioned Highlights
+curl "http://localhost:8082/highlights/top-mentioned?limit=5"
+
+Notes
+
+The Class API listens on port 8082.
+
+It acts as the middle service layer between:
+
+Tier 1 (Data API) -> Port 4567
+
+Tier 2 (Class API) ->
+
+Tier 3 (UI API) -> Port 8083
+
+If you see an error like:
+
+{"error":"Failed to reach Data API"}, make sure your Data API is running and accessible at http://localhost:4567.
