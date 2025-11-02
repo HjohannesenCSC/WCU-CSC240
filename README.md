@@ -84,6 +84,7 @@ The API will start on:
 http://localhost:8082
 
 ⚠️ Make sure the Tier 1 (Data API) is already running on port 4567 — the Class API depends on it for retrieving movie and news data.
+
 ⚠️ Also make sure you have seperate terminals for each tier of commands - one for Tier 1, another for Tier 2, and likely a third for Tier 3.
 
 Class API Endpoints
