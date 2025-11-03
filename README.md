@@ -79,6 +79,8 @@ Compile and build using Maven in a terminal using command: mvn clean compile
 
 mvn exec:java -Dexec.mainClass=com.yourteam.classapi.ClassApi
 
+If that doesn't work originally, ensure your cd is in the file path to where the program files are located.
+Then try: mvn exec:java
 
 The API will start on:
 http://localhost:8082
