@@ -95,6 +95,7 @@ Endpoint	Method	Purpose
 /highlights/top-mentioned?limit=5	GET	Returns the top N movies ranked by news mentions and popularity
 /	GET	Returns service information and available endpoints
 Example Test Commands
+
 ✅ Health Check
 curl http://localhost:8082/health
 
