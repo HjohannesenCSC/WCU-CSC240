@@ -1,3 +1,4 @@
+package com.wcupa.csc240.ingestor;
 public class Movie {
     private int id;
     private String title;

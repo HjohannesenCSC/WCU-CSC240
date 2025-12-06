@@ -1,3 +1,4 @@
+package phase1;
 public class NewsMention {
     private int movieId;
     private String newsSource;

@@ -1,4 +1,4 @@
-TMDBLoader.class
-Main.class
-NewsAPILoader.class
-NewsMention.class
+com\wcupa\csc240\ingestor\NewsAPILoader.class
+com\wcupa\csc240\ingestor\NewsMention.class
+com\wcupa\csc240\ingestor\Main.class
+com\wcupa\csc240\ingestor\TMDBLoader.class

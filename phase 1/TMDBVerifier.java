@@ -1,3 +1,4 @@
+package com.wcupa.csc240.ingestor;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;

@@ -1,3 +1,4 @@
+package com.wcupa.csc240.ingestor;
 public class NewsMention {
     private int movieId;
     private String newsSource;

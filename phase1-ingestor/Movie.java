@@ -1,3 +1,4 @@
+package phase1;
 public class Movie {
     private int id;
     private String title;
