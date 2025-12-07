@@ -13,10 +13,12 @@ public class SiteGenerator {
         System.out.println("WCU-CSC 240 - Team: Rylee, Hooria, Henry, Matt");
 
 
-        String url = "http://localhost:8082/highlights/top-mentioned?limit=5";
+        // Uses APISIX public-facing URL if available
+        // Call the UI API exposed through APISIX under /ui/* (APISIX has a route for /ui/* -> UI API service)
+        String apisixBase = System.getenv().getOrDefault("APISIX_URL", "http://127.0.0.1:9080");
+        String url = apisixBase + "/ui/dashboard";
 
-
-        System.out.println("Calling UI API endpoint: " + url);
+        System.out.println("Calling UI API endpoint (via APISIX): " + url);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
