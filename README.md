@@ -115,6 +115,21 @@ curl "http://localhost:8082/movies/with-news?minMentions=5&limit=10"
 Get Top Mentioned Highlights
 curl "http://localhost:8082/highlights/top-mentioned?limit=5"
 
+Using APISIX gateway
+--------------------
+If Apache APISIX is running as the API gateway, the services should make requests to APISIX's public/gateway port instead of calling backend services directly. Set the environment variable `APISIX_URL` to the gateway base (for example `http://127.0.0.1:9080`) and the application will route requests through APISIX. Example:
+
+PowerShell:
+```powershell
+$env:APISIX_URL = "http://127.0.0.1:9080"
+java -jar path\to\phase3-site-generator.jar
+```
+
+Can verify APISIX routes using the Admin API
+```powershell
+curl.exe -v http://127.0.0.1:9180/apisix/admin/routes -H "X-API-KEY: <admin-key>"
+```
+
 Notes
 
 The Class API listens on port 8082.
