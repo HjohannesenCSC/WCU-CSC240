@@ -130,6 +130,20 @@ Can verify APISIX routes using the Admin API
 curl.exe -v http://127.0.0.1:9180/apisix/admin/routes -H "X-API-KEY: <admin-key>"
 ```
 
+HTTPD Steps:
+I started a new official httpd Docker container that serves the local site directory (no host Apache required)
+
+docker run -d --name phase3-httpd -p 8080:80 -v "C:/GitHub/WCU-CSC240/phase3-site-generator/target/site:/usr/local/apache2/htdocs:ro" httpd:2.4
+
+To copy httpd.conf out of its Container running in Docker:
+
+Powershell Command: docker cp phase3-httpd:/usr/local/apache2/conf/httpd.conf .\httpd.conf
+
+To return it: docker cp .\httpd.conf phase3-httpd:/usr/local/apache2/conf/httpd.conf
+
+Restart Container after editing httpd.conf: docker restart phase3-httpd
+
+
 Notes
 
 The Class API listens on port 8082.
