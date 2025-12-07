@@ -144,7 +144,8 @@ To return it: docker cp .\httpd.conf phase3-httpd:/usr/local/apache2/conf/httpd.
 Restart Container after editing httpd.conf: docker restart phase3-httpd
 
 
-Notes
+
+## Notes
 
 The Class API listens on port 8082.
 
